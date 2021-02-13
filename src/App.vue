@@ -43,7 +43,7 @@
         <v-icon class="blue--text text--darken-2 text-h3">mdi-linkedin</v-icon>
       </v-btn>
 
-      <v-btn icon href="https://github.com/TChinasso" target="_blank">
+      <v-btn icon href="https://github.com/TChinasso/vuetify-todo" target="_blank">
         <v-icon class="grey--text text--darken-1 text-h3">mdi-github</v-icon>
       </v-btn>
     </v-app-bar>
