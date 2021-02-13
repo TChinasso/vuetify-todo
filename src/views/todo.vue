@@ -1,78 +1,41 @@
 <template>
   <div class="home d-flex flex-column  fullvh">
-  
-          <v-text-field
-            class="pa-2 white"
-            v-model="newTaskTitle"
-            @click:append="addTask()"
-            @keyup.enter="addTask()"
-            outlined
-            hide-details
-            clearable
-            label="Add new task"
-            append-icon="mdi-plus"
-          ></v-text-field>
-    <div class="d-flex flex-column justify-space-between fullvh mt-auto" app>
-      <v-list
-      class="pt-0 pb-0"
-      flat
-    >
-        <div v-for="task in tasks" :key="task.id">
-          <v-list-item 
-          @click="doneTask(task.id)"
-          :class="{ 'blue lighten-4' : task.done }"
-          >
-          <template v-slot:default>
-            <v-list-item-action>
-              <v-checkbox
-                :input-value="task.done"
-                color="primary"
-              ></v-checkbox>
-            </v-list-item-action>
 
-            <v-list-item-content>
-              <v-list-item-title 
-              :class="{ 'text-decoration-line-through' : task.done }"
-              >{{task.title}}</v-list-item-title>
-            </v-list-item-content>
-            <v-list-item-action>
-          <v-btn
-           icon
-           @click.stop="deleteTask(task.id)"
-           >
-            <v-icon color="primary lighten-1">mdi-delete-forever</v-icon>
-          </v-btn>
-        </v-list-item-action>
-          </template>
-        </v-list-item>
-        <v-divider></v-divider>
+    <v-text-field class="pa-2 white" v-model="newTaskTitle" @click:append="addTask()" @keyup.enter="addTask()" outlined
+      hide-details clearable label="Add new task" append-icon="mdi-plus"></v-text-field>
+    <div class="d-flex flex-column justify-space-between fullvh mt-auto" app>
+      <v-list class="pt-0 pb-0" flat>
+        <div v-for="task in tasks" :key="task.id">
+          <v-list-item @click="doneTask(task.id)" :class="{ 'blue lighten-4' : task.done }">
+            <template v-slot:default>
+              <v-list-item-action>
+                <v-checkbox :input-value="task.done" color="primary"></v-checkbox>
+              </v-list-item-action>
+
+              <v-list-item-content>
+                <v-list-item-title :class="{ 'text-decoration-line-through' : task.done }">{{task.title}}
+                </v-list-item-title>
+              </v-list-item-content>
+              <v-list-item-action>
+                <v-btn icon @click.stop="deleteTask(task.id)">
+                  <v-icon color="primary lighten-1">mdi-delete-forever</v-icon>
+                </v-btn>
+              </v-list-item-action>
+            </template>
+          </v-list-item>
+          <v-divider></v-divider>
         </div>
 
-    </v-list>
-    
-    <v-alert
-      class=" success ma-1"
-      success
-      :value="alert"
-      color="pink"
-      dark
-      icon="mdi-check"
-      transition="scale-transition"
-    >
-      Task added
-    </v-alert>
-    <v-alert
-      class=" ma-1"
-      type="error"
-      success
-      :value="deleteAlert"
-      color="pink"
-      dark
-      icon="mdi-check"
-      transition="scale-transition"
-    >
-      Task deleted
-    </v-alert>
+      </v-list>
+
+      <v-alert class=" success ma-1" success :value="alert" color="pink" dark icon="mdi-check"
+        transition="scale-transition">
+        Task added
+      </v-alert>
+      <v-alert class=" ma-1" type="error" success :value="deleteAlert" color="pink" dark icon="mdi-check"
+        transition="scale-transition">
+        Task deleted
+      </v-alert>
     </div>
   </div>
 </template>

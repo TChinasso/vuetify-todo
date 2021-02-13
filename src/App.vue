@@ -1,11 +1,7 @@
 <template>
   <v-app id="inspire">
-    <v-navigation-drawer
-      v-model="drawer"
-      app
-      color="grey lighten-5"
-    >
-    <v-list-item>
+    <v-navigation-drawer v-model="drawer" app color="grey lighten-5">
+      <v-list-item>
         <v-list-item-content>
           <v-list-item-title class="title">
             Application
@@ -18,17 +14,9 @@
 
       <v-divider></v-divider>
 
-      <v-list
-        dense
-        nav
-      >
-        <v-list-item
-          v-for="item in items"
-          :key="item.title"
-          link
-          :to="item.path"
-        >
-            <v-list-item-icon>
+      <v-list dense nav>
+        <v-list-item v-for="item in items" :key="item.title" link :to="item.path">
+          <v-list-item-icon>
             <v-icon>{{ item.icon }}</v-icon>
           </v-list-item-icon>
 
@@ -40,17 +28,9 @@
       <!--  -->
     </v-navigation-drawer>
 
-    <v-app-bar
-      app
-      absolute
-      color="blue-grey darken-3"
-      dark
-    >
+    <v-app-bar app absolute color="blue-grey darken-3" dark>
       <template v-slot:img="{ props }">
-        <v-img
-          v-bind="props"
-          
-        ></v-img>
+        <v-img v-bind="props"></v-img>
       </template>
 
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
@@ -68,9 +48,7 @@
       </v-btn>
     </v-app-bar>
 
-    <v-main
-    class="grey lighten-2"
-    >
+    <v-main class="grey lighten-2">
       <router-view></router-view>
     </v-main>
   </v-app>
