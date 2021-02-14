@@ -16,10 +16,28 @@
                 <v-list-item-title :class="{ 'text-decoration-line-through' : task.done }">{{task.title}}
                 </v-list-item-title>
               </v-list-item-content>
-              <v-list-item-action>
-                <v-btn icon @click.stop="deleteTask(task.id)">
-                  <v-icon color="primary lighten-1">mdi-delete-forever</v-icon>
+              
+              <v-list-item-action class="d-flex flex-row">
+                <v-menu offset-y>
+      <template v-slot:activator="{ on, attrs }">
+        <v-btn v-bind="attrs"
+          v-on="on"
+           icon
+            @click.stop="showMenu = true">
+                  <v-icon>mdi-dots-vertical</v-icon>
                 </v-btn>
+      </template>
+      <v-list v-show="showMenu">
+        <v-list-item @click.stop="deleteTask(task.id), showMenu = false">
+            <v-icon left color="grey lighten-1">mdi-delete-forever</v-icon>
+          <v-list-item-title>Delete</v-list-item-title>
+        </v-list-item>
+        <v-list-item @click.stop="getTaskId(task.id), showMenu = false">
+            <v-icon left color="grey lighten-1">mdi-pencil</v-icon>
+          <v-list-item-title>Edit</v-list-item-title>
+        </v-list-item>
+      </v-list>
+    </v-menu>
               </v-list-item-action>
             </template>
           </v-list-item>
@@ -27,6 +45,46 @@
         </div>
 
       </v-list>
+      <v-overlay
+          :absolute="absolute"
+          :opacity="opacity"
+          :value="overlay"
+          light
+        >
+        <v-card 
+          light 
+          width="300" 
+          @keydown.enter="changeTaskTitle(), overlay = false"
+          @keydown.esc="overlay = false"
+        >
+        <v-card-title>Edit task</v-card-title>
+        <v-card-subtitle>Edit the title of this task</v-card-subtitle>
+        <v-divider></v-divider>
+
+          <v-text-field autofocus class="ma-2" v-model="taskOnEdit.title">
+
+          </v-text-field>
+
+        <v-divider></v-divider>
+        <v-card-actions>
+          <v-btn
+            color="red darken-1"
+            text
+            @click="overlay = false"
+          >
+            Close
+          </v-btn>
+          <v-btn
+            color="green darken-1"
+            text
+            @click="changeTaskTitle(), overlay = false "
+            
+          >
+            Save
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+        </v-overlay>
 
       <v-alert class=" success ma-1" success :value="alert" color="pink" dark icon="mdi-check"
         transition="scale-transition">
@@ -35,6 +93,10 @@
       <v-alert class=" ma-1" type="error" success :value="deleteAlert" color="pink" dark icon="mdi-check"
         transition="scale-transition">
         Task deleted
+      </v-alert>
+      <v-alert class=" ma-1" type="error" success :value="titleAlert" color="pink" dark icon="mdi-message-alert"
+        transition="scale-transition">
+        Please fill the title of the new task
       </v-alert>
     </div>
   </div>
@@ -47,6 +109,13 @@ export default {
   name: 'Home',
   data () {
     return {
+      showMenu: null,
+      taskId: '',
+      taskOnEdit: '',
+      absolute: true,
+      opacity: 0.5,
+      overlay: false,
+      titleAlert: false,
       deleteAlert: false,
       alert: false,
       newTaskTitle: '',
@@ -89,13 +158,17 @@ export default {
     },
     addTask(){
       let newTask = {
-        id: this.tasks.length + 1,
+        id: Date.now(),
         title: this.newTaskTitle,
         done: false
       }
-      this.tasks.push(newTask)
-      this.newTaskTitle = ''
-      this.taskAddAlert()
+      if(this.newTaskTitle != ''){
+        this.tasks.push(newTask)
+        this.newTaskTitle = ''
+        this.taskAddAlert()
+      } else {
+        this.blankTitleAlert()
+      }
     },
     disableAlert(){
       this.alert = false
@@ -107,6 +180,18 @@ export default {
     taskDeleteAlert(){
     this.deleteAlert = !this.deleteAlert
     setTimeout(() => this.deleteAlert = false, 2500)
+    },
+    blankTitleAlert(){
+      this.titleAlert = !this.titleAlert
+      setTimeout(() => this.titleAlert = false, 2500)
+    },
+    getTaskId(id){
+      this.overlay = true
+      this.taskId = this.tasks.indexOf(this.tasks.filter(filteredTask => filteredTask.id === id)[0])
+      this.taskOnEdit = Object.assign({}, this.tasks[this.taskId])
+    },
+    changeTaskTitle(){
+      this.tasks[this.taskId].title = this.taskOnEdit.title
     }
   },
   
