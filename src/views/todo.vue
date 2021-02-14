@@ -1,5 +1,5 @@
 <template>
-  <div class="home d-flex flex-column  fullvh">
+  <div class="home d-flex flex-column  fullvh pl-lg-5 pr-lg-5 pt-lg-1">
 
     <v-text-field class="pa-2 white" v-model="newTaskTitle" @click:append="addTask()" @keyup.enter="addTask()" outlined
       hide-details clearable label="Add new task" append-icon="mdi-plus"></v-text-field>
