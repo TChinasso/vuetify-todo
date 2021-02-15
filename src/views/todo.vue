@@ -85,7 +85,6 @@
         </v-card-actions>
       </v-card>
         </v-overlay>
-
       <v-alert class=" success ma-1" success :value="alert" color="pink" dark icon="mdi-check"
         transition="scale-transition">
         Task added
@@ -104,11 +103,16 @@
 
 <script>
 
-
 export default {
-  name: 'Home',
+  name: 'todo',
+  comonents: {
+  },
+  title () {
+    return `Foo Page — ${1+1}`
+  },
   data () {
     return {
+      dragData: {},
       showMenu: null,
       taskId: '',
       taskOnEdit: '',
@@ -192,13 +196,21 @@ export default {
     },
     changeTaskTitle(){
       this.tasks[this.taskId].title = this.taskOnEdit.title
-    }
-  },
-  
+    },
+
+  }
 }
 </script>
 <style scoped>
 .fullvh{
   height: 100%;
+}
+.list {
+  position: relative; /* position of list container must be set to `relative` */
+}
+/* dragging item will be added with a `dragging` class */
+/* so you can use this class to define the appearance of it */
+.list > *.dragging {
+  box-shadow: 0 2px 10px 0 rgba(0,0,0,.2);
 }
 </style>

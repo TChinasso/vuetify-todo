@@ -65,5 +65,13 @@
         ],
       right: null,
     }),
+    watch: {
+      '$route':{
+        handler: (to, from) => {
+          document.title = to.meta.title || 'Tc Todo'
+        },
+         immediate: true
+      }
+    },
   }
 </script>
