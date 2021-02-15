@@ -85,7 +85,7 @@
         <v-card 
         light 
         width="300"
-        @keydown.enter="changeTaskTitle(), overlay = false" 
+        @keydown.enter="changeTaskTitle(), overlay = false, taskEditAlert()" 
         @keydown.esc="overlay = false"
         >
           <v-card-title>Edit task</v-card-title>
@@ -111,16 +111,16 @@
             <v-btn 
             color="green darken-1" 
             text 
-            @click="changeTaskTitle(), overlay = false "
+            @click="changeTaskTitle(), overlay = false, taskEditAlert() "
             >
               Save
             </v-btn>
           </v-card-actions>
         </v-card>
       </v-overlay>
-      <v-alert 
-      class="ma-1" 
-      success 
+      <!-- <v-alert 
+      class="ma-1"
+      type="success"
       :value="alert" 
       dark 
       icon="mdi-check"
@@ -129,23 +129,39 @@
       </v-alert>
       <v-alert 
       class="ma-1" 
-      type="error" 
-      success 
+      type="error"  
       :value="deleteAlert" 
       dark icon="mdi-check"
       transition="scale-transition">
         Task deleted
-      </v-alert>
-      <v-alert 
+      </v-alert> -->
+      <div>
+        <v-alert 
       class="ma-1"
-      type="error" 
-      success 
-      :value="titleAlert" 
+      :type="alertTrigger.type" 
+      :value="alertTrigger.isOn" 
       dark 
-      icon="mdi-message-alert"
-      transition="scale-transition">
-        Please fill the title of the new task
+      :icon="alertTrigger.icon"
+      transition="scale-transition"
+      close-text="Close Alert"
+      >
+        <v-row class="center">
+          <v-col class="">
+            {{alertTrigger.text}}
+          </v-col>
+          <v-col class="shrink">
+          <v-btn
+          icon
+          @click="disableAlert"
+          >
+            <v-icon>
+              mdi-close
+            </v-icon>
+          </v-btn>
+        </v-col>
+      </v-row>
       </v-alert>
+      </div>
     </div>
   </div>
 </template>
@@ -193,7 +209,12 @@ export default {
           title: 'Code',
           done: false
         },
-      ]
+      ],
+      alertTrigger: {
+        type: '',
+        isOn: false,
+        text: ''
+      }
     }
   },
   components: {
@@ -224,19 +245,41 @@ export default {
       }
     },
     disableAlert(){
-      this.alert = false
+      this.alertTrigger.isOn = false
     },
     taskAddAlert(){
-    this.alert = !this.alert
-    setTimeout(() => this.disableAlert(), 2500)
+    let newAlertTrigger = {
+      type: 'success',
+      isOn: true,
+      text: 'Task added',
+      icon: 'mdi-check'
+    }
+    this.alertTrigger = {...newAlertTrigger}
+    setTimeout(() => this.alertTrigger.isOn = false, 3500)
+    },
+    taskEditAlert(){
+    let newAlertTrigger = {
+      type: 'success',
+      isOn: true,
+      text: 'Task edited',
+      icon: 'mdi-pen'
+    }
+    this.alertTrigger = {...newAlertTrigger}
+    setTimeout(() => this.alertTrigger.isOn = false, 3500)
     },
     taskDeleteAlert(){
-    this.deleteAlert = !this.deleteAlert
-    setTimeout(() => this.deleteAlert = false, 2500)
+    let newAlertTrigger = {
+      type: 'error',
+      isOn: true,
+      text: 'Task deleted',
+      icon: 'mdi-delete-forever'
+    }
+    this.alertTrigger = {...newAlertTrigger}
+    setTimeout(() => this.alertTrigger.isOn = false, 3500)
     },
     blankTitleAlert(){
       this.titleAlert = !this.titleAlert
-      setTimeout(() => this.titleAlert = false, 2500)
+      setTimeout(() => this.alertTrigger.isOn = false, 3500)
     },
     getTaskId(id){
       this.overlay = true
@@ -245,8 +288,7 @@ export default {
     },
     changeTaskTitle(){
       this.tasks[this.taskId].title = this.taskOnEdit.title
-    },
-
+    }
   }
 }
 </script>
