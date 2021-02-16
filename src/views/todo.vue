@@ -118,23 +118,6 @@
           </v-card-actions>
         </v-card>
       </v-overlay>
-      <!-- <v-alert 
-      class="ma-1"
-      type="success"
-      :value="alert" 
-      dark 
-      icon="mdi-check"
-      transition="scale-transition">
-        Task added
-      </v-alert>
-      <v-alert 
-      class="ma-1" 
-      type="error"  
-      :value="deleteAlert" 
-      dark icon="mdi-check"
-      transition="scale-transition">
-        Task deleted
-      </v-alert> -->
       <div>
         <v-alert 
       class="ma-1"
@@ -177,7 +160,6 @@ export default {
   },
   data () {
     return {
-      dragData: {},
       showMenu: null,
       taskId: '',
       taskOnEdit: '',
@@ -188,30 +170,9 @@ export default {
       deleteAlert: false,
       alert: false,
       newTaskTitle: '',
-      tasks: [
-        {
-          id: 1,
-          title: 'Wake up',
-          done: false
-        },
-        {
-          id: 2,
-          title: 'Brush your teeth',
-          done: false
-        },
-        {
-          id: 3,
-          title: 'Take a coffe',
-          done: false
-        },
-        {
-          id: 4,
-          title: 'Code',
-          done: false
-        },
-      ],
+      tasks: [],
       alertTrigger: {
-        type: '',
+        type: 'success',
         isOn: false,
         text: ''
       }
@@ -223,7 +184,10 @@ export default {
   methods: {
     doneTask(id){
       let task = this.tasks.filter(filteredTask => filteredTask.id === id)
+      let indexOfThisTask = this.tasks.indexOf(task[0])
       task[0].done = !task[0].done     
+      this.tasks[indexOfThisTask] = task[0]
+      console.log(this.tasks)
     },
     deleteTask(id){
       let task = this.tasks.filter(filteredTask => filteredTask.id !== id)
@@ -278,8 +242,14 @@ export default {
     setTimeout(() => this.alertTrigger.isOn = false, 3500)
     },
     blankTitleAlert(){
-      this.titleAlert = !this.titleAlert
-      setTimeout(() => this.alertTrigger.isOn = false, 3500)
+      let newAlertTrigger = {
+      type: 'error',
+      isOn: true,
+      text: 'Please, add a valid task',
+      icon: 'mdi-delete'
+    }
+    this.alertTrigger = {...newAlertTrigger}
+    setTimeout(() => this.alertTrigger.isOn = false, 3500)
     },
     getTaskId(id){
       this.overlay = true
@@ -288,9 +258,25 @@ export default {
     },
     changeTaskTitle(){
       this.tasks[this.taskId].title = this.taskOnEdit.title
+    },
+  },
+  mounted() {
+    console.log('testando localStorage')
+    if(!localStorage.tasks){
+      localStorage.setItem('tasks', JSON.stringify([]))
+    }
+    this.tasks = JSON.parse(localStorage.getItem('tasks'))
+    console.log(this.tasks)
+  },
+  watch: {
+    tasks: {
+      deep: true,
+      handler(){
+        localStorage.tasks = JSON.stringify(this.tasks)
+      }
+    }
     }
   }
-}
 </script>
 <style scoped>
 .fullvh{
