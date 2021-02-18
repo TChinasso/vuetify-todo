@@ -1,6 +1,9 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Todo from '../views/todo.vue'
+import VueMeta from 'vue-meta';
+
+Vue.use(VueMeta);
 
 Vue.use(VueRouter)
 
@@ -9,10 +12,6 @@ const routes = [
     path: '/',
     name: 'Todo',
     component: Todo,
-    meta: {
-      auth: true,
-      title: 'Todo'
-    }
   },
   {
     path: '/about',
@@ -21,26 +20,7 @@ const routes = [
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: () => import(/* webpackChunkName: "about" */ '../views/About.vue'),
-    meta: [{
-      auth: true,
-      title: 'About us', 
-    },
-    {
-      property: 'og:image',
-      content: '../public/app.PNG',
-      vmid: 'og:image'
-    },
-    {
-      property: 'og:title',
-      content: 'TODO - About Us',
-      vmid: 'og:title'
-    },
-    {
-      property: 'og:description',
-      content: 'About this todo project',
-      vmid: 'og:description'
-    },
-  ]
+    
   }
 ]
 

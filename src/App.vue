@@ -81,6 +81,10 @@
 
 <script>
   export default {
+    metaInfo: {
+    title: 'Home',
+    titleTemplate: '%s | Vuetify Todo'
+  },
     data: () => ({ 
       drawer: null,
       path: null,
