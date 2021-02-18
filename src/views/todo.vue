@@ -152,7 +152,28 @@
 <script>
 
 export default {
+
   name: 'todo',
+      metaInfo: {
+    title: 'About Us',
+    meta: [
+      {
+      property: 'og:image',
+      content: '../public/app.PNG',
+      vmid: 'og:image'
+    },
+    {
+      property: 'og:title',
+      content: 'TODO - Home',
+      vmid: 'og:title'
+    },
+    {
+      property: 'og:description',
+      content: 'Todo app made with VueJs + Vuetify by TChinasso',
+      vmid: 'og:description'
+    },
+    ]
+  },
   comonents: {
   },
   title () {
